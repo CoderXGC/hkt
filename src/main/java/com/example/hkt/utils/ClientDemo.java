@@ -240,7 +240,7 @@ public class ClientDemo {
             try {
                 String carInfo = new String(lpOuter.struPlateInfo.sLicense, "GBK");
                 String sAlarmType1 = "车牌颜色：" + lpOuter.struPlateInfo.byColor + ",交通抓拍上传，车牌：" + carInfo;
-
+                System.out.println(carInfo);
                 Map<String, String> paramMap = new HashMap<String, String>();
                 paramMap.put("type", CarType.getCarType(lpOuter.byVehicleType + "".trim()));//车辆类型
                 if (carInfo.contains("<licensePlate>")) {
@@ -288,10 +288,12 @@ public class ClientDemo {
                 return 1;
 
             } catch (UnsupportedEncodingException e) {
+                System.out.println("抛出异常了1");
                 e.printStackTrace();
 
             } catch (IOException e) {
                 e.printStackTrace();
+                System.out.println("抛出异常了2");
 
             }
         } else {
@@ -526,7 +528,7 @@ public class ClientDemo {
                                   {
                                       fout=new FileOutputStream(file);
 
-                                      System.out.println("文件路径" + file.getAbsolutePath());
+                                   //   System.out.println("文件路径" + file.getAbsolutePath());
                                       //将字节写入文件
                                       long offset = 0;
                                       ByteBuffer buffers = info.pBuffer.getByteBuffer(offset, info.dwDataLen);
@@ -568,6 +570,15 @@ public class ClientDemo {
                     }
                     break;
                 default:
+                    if (session != null ){
+                        String message = "{\"code\":1,\"message\":\"" + "暂未识别车牌" + "\"}";
+                        synchronized (session) {
+                            session.getBasicRemote().sendText(message);
+                            //System.out.println("传送前端完成"+"时间"+dateFormat.format(new Date()));
+
+                            logger.info("传送前端完成code1"+"时间"+dateFormat.format(new Date()));
+                        }
+                    }
                    // System.out.println("未识别车辆"+dateFormat.format(new Date()));
                     logger.info("未识别车辆"+dateFormat.format(new Date()));
                     break;

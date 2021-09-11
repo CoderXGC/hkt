@@ -9,6 +9,8 @@ package com.example.hkt.controller;/**
 import com.example.hkt.TailfLogThread;
 import com.example.hkt.utils.ClientDemo;
 import com.sun.jna.Pointer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.OnClose;
@@ -34,7 +36,7 @@ import java.net.UnknownHostException;
 @ServerEndpoint("/log")
 @RestController
 public class WebSocketController {
-
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketController.class);
     private Process process;
     private InputStream inputStream;
 
@@ -43,6 +45,7 @@ public class WebSocketController {
      */
     @OnOpen
     public void onOpen(Session session) {
+        logger.info("进入链接....");
         String username = "admin";
         String password = "passw0rd";
         int userid;
