@@ -78,13 +78,15 @@ public class WebSocketController {
     @OnClose
     public void onClose() {
         try {
-            if(inputStream != null)
+            if(inputStream != null) {
                 inputStream.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(process != null)
+        if(process != null) {
             process.destroy();
+        }
     }
 
     @OnError

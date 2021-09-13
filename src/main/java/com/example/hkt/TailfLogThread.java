@@ -25,8 +25,8 @@ import java.io.InputStreamReader;
 
 public class TailfLogThread extends Thread {
 
-    private BufferedReader reader;
-    private Session session;
+    public BufferedReader reader;
+    public Session session;
 
     public TailfLogThread(InputStream in, Session session) {
         this.reader = new BufferedReader(new InputStreamReader(in));

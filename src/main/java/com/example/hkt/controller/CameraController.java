@@ -17,6 +17,16 @@ import java.net.UnknownHostException;
  * @date 2021/9/714:00
  */
 @RestController
+
+
+
+
+
+
+
+
+
+
 @RequestMapping("/zhuatu")
 public class CameraController {
     @RequestMapping(value = "/test")
@@ -34,8 +44,8 @@ public class CameraController {
             e.printStackTrace();
         }
         userid=clientDemo.register(username, password, ip);
-       clientDemo.SetupAlarmChan();
-       clientDemo.StartAlarmListen();
+     clientDemo.SetupAlarmChan();
+    // clientDemo.StartAlarmListen();
        System.out.println("输出id"+userid);
         clientDemo.zhuaTu(userid);
     }

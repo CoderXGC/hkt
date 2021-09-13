@@ -3,9 +3,9 @@ package com.example.hkt.info;
 public class ApplicationInfo {
 
 
-    public static String path = System.getProperty("user.dir");
+    public  String path = System.getProperty("user.dir");
 
-    public static String getHikvisionDllPath() {
+    public  String getHikvisionDllPath() {
         return hikvisionDllPath;
     }
 
