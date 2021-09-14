@@ -46,6 +46,16 @@ public class ClientDemo {
        // fMSFCallBack = null;
 
     }
+    //
+    public void CameraInit(){
+        //初始化
+        boolean initSuc = hCNetSDK.NET_DVR_Init();
+        if (initSuc != true){
+            System.out.println("初始化失败");
+        }else{
+            System.out.println("初始化成功");
+        }
+    }
     public void Camerainit() throws UnknownHostException {
         String username = "admin";
         String password = "passw0rd";
@@ -226,7 +236,7 @@ public class ClientDemo {
 
     //测试抓图
     public int zhuaTu(int lUserID) {
-        // 7.手动抓图
+   /*     // 7.手动抓图
      HCNetSDK.NET_DVR_MANUALSNAP lpInter = new HCNetSDK.NET_DVR_MANUALSNAP();
         HCNetSDK.NET_DVR_PLATE_RESULT lpOuter = new HCNetSDK.NET_DVR_PLATE_RESULT();
         // 调用NET_DVR_ManualSnap之前要手动给NET_DVR_PLATE_RESULT的缓存区设置大小，详细叫api
@@ -238,7 +248,7 @@ public class ClientDemo {
             try {
                 String carInfo = new String(lpOuter.struPlateInfo.sLicense, "GBK");
                 String sAlarmType1 = "车牌颜色：" + lpOuter.struPlateInfo.byColor + ",交通抓拍上传，车牌：" + carInfo;
-                System.out.println(carInfo);
+                System.out.println("车牌号是"+carInfo);
                 Map<String, String> paramMap = new HashMap<String, String>();
                 paramMap.put("type", CarType.getCarType(lpOuter.byVehicleType + "".trim()));//车辆类型
                 if (carInfo.contains("<licensePlate>")) {
@@ -270,7 +280,7 @@ public class ClientDemo {
 
                 System.out.println("文件路径" + filename + imgName);
                 //将字节写入文件
-            /*    long offset = 0;
+              long offset = 0;
                 ByteBuffer buffers = lpOuter.pBuffer1.getByteBuffer(offset, lpOuter.dwPicLen);
                 byte[] bytes = new byte[lpOuter.dwPicLen];
                 buffers.rewind();
@@ -281,7 +291,7 @@ public class ClientDemo {
               byte[] bytes = new byte[lpOuter.dwPicLen];
                 long offset = 0;
                 buffers.rewind();
-                buffers.get(bytes);*/
+                buffers.get(bytes);
                 return 1;
 
             } catch (UnsupportedEncodingException e) {
@@ -297,19 +307,16 @@ public class ClientDemo {
             int errorCode = hcNetSDK.NET_DVR_GetLastError();
             System.out.println("手动抓图失败:" + errorCode);
             return 0;
-        }
-
-      /*  HCNetSDK.NET_DVR_MANUALSNAP lpInter = new HCNetSDK.NET_DVR_MANUALSNAP();
+        }*/
+        HCNetSDK.NET_DVR_MANUALSNAP lpInter = new HCNetSDK.NET_DVR_MANUALSNAP();
         HCNetSDK.NET_DVR_PLATE_RESULT lpOuter = new HCNetSDK.NET_DVR_PLATE_RESULT();
         // 调用NET_DVR_ManualSnap之前要手动给NET_DVR_PLATE_RESULT的缓存区设置大小，详细叫api
         // 不知道会不会CG，后期再优化
-      lpOuter.pBuffer1 = new Memory(1024 * 1024);
-       int errorCode = hcNetSDK.NET_DVR_GetLastError();
-       logger.info("错误代码" + errorCode );
-        if (hcNetSDK.NET_DVR_ManualSnap(lUserID, lpInter, lpOuter)) {
-            int errorCode1 = hcNetSDK.NET_DVR_GetLastError();
-            logger.info("错误代码1" + errorCode1 );
-
+        lpOuter.pBuffer1 = new Memory(1024 * 1024);
+        this.UserID=lUserID;
+        if (hCNetSDK.NET_DVR_ManualSnap(UserID, lpInter, lpOuter)) {
+         //   int errorCode1 = hcNetSDK.NET_DVR_GetLastError();
+        //    logger.info("错误代码1" + errorCode1 );
             try {
                 String carInfo = new String(lpOuter.struPlateInfo.sLicense, "GBK");
                 String sAlarmType = "车牌颜色：" + lpOuter.struPlateInfo.byColor + ",交通抓拍上传，车牌：" + carInfo;
@@ -318,24 +325,76 @@ public class ClientDemo {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
+            try {
+                String carInfo = new String(lpOuter.struPlateInfo.sLicense, "GBK");
+                String sAlarmType1 = "车牌颜色：" + lpOuter.struPlateInfo.byColor + ",交通抓拍上传，车牌：" + carInfo;
+                System.out.println("车牌号是"+carInfo);
+                Map<String, String> paramMap = new HashMap<String, String>();
+                paramMap.put("type", CarType.getCarType(lpOuter.byVehicleType + "".trim()));//车辆类型
+                if (carInfo.contains("<licensePlate>")) {
+                    int start = carInfo.indexOf("<licensePlate>") + ("<licensePlate>".length());
+                    int end = carInfo.indexOf("</licensePlate>");
+                    String carNo = carInfo.substring(start, end);
+                    System.out.println("车牌号是：" + carNo);
+                }
+                paramMap.put("plateNumber", carInfo.substring(1, carInfo.length()).trim());//车牌号
+                paramMap.put("byCountry", carInfo.substring(1, 2).trim());//省份
+                paramMap.put("byColor", carInfo.substring(0, 1).trim());//车牌颜色
+                paramMap.put("wSpeed", String.valueOf(new Random().nextInt(55 - 5) + 5));//速度 这是假的
+
+                // 车牌照片存放位置
+                SimpleDateFormat sfYMD = new SimpleDateFormat("yyyyMMdd");
+                String filename = "F:"+ "\\车牌照片\\" + "\\抓拍\\" + sfYMD.format(new Date()) + "\\";
+                SimpleDateFormat sf = new SimpleDateFormat("HHmmss");
+                String imgName = sf.format(new Date()) + ".jpg";
+                System.out.println("大小"+lpOuter.dwSize);
+                HCNetSDK.NET_DVR_PLATE_INFO info = lpOuter.struPlateInfo;
 
 
-        }*/
+                File file = new File(filename + imgName);
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
+                FileOutputStream fout = new FileOutputStream(filename + imgName);
+
+
+                System.out.println("文件路径" + filename + imgName);
+                //将字节写入文件
+                long offset = 0;
+                ByteBuffer buffers = lpOuter.pBuffer1.getByteBuffer(offset, lpOuter.dwPicLen);
+                byte[] bytes = new byte[lpOuter.dwPicLen];
+                buffers.rewind();
+                buffers.get(bytes);
+                fout.write(bytes);
+                fout.close();
+                return 1;
+
+            } catch (UnsupportedEncodingException e) {
+                System.out.println("抛出异常了1");
+                e.printStackTrace();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("抛出异常了2");
+
+            }
+
+        }
        HCNetSDK.NET_DVR_SNAPCFG struSnapCfg = new HCNetSDK.NET_DVR_SNAPCFG();
         struSnapCfg.dwSize=struSnapCfg.size();
         struSnapCfg.bySnapTimes =1;
         struSnapCfg.wSnapWaitTime =1000;
         struSnapCfg.write();
 
-        if (false == hCNetSDK.NET_DVR_ContinuousShoot(lUserID, struSnapCfg)){
+     /*   if (false == hCNetSDK.NET_DVR_ContinuousShoot(lUserID, struSnapCfg)){
             int iErr = hCNetSDK.NET_DVR_GetLastError();
             System.out.println("网络触发失败，错误号：" + iErr);
             return 0;
         }else{
             System.out.println("抓图成功！");
             return 1;
-        }
-
+        }*/
+        return 1;
 
     }
 
@@ -586,7 +645,7 @@ public class ClientDemo {
            //System.out.println("识别信息：---》" + sAlarmType + " lCommand: " + lCommand + " ip:" + new String(pAlarmer.sDeviceIP).trim() + " 时间:" + dateFormat.format(new Date()));
             logger.info("识别信息：---》" + sAlarmType + " lCommand: " + lCommand + " ip:" + new String(pAlarmer.sDeviceIP).trim() + " 时间:" + dateFormat.format(new Date()));
           //  System.out.println("识别完毕！"+dateFormat.format(new Date()));
-            logger.info("识别完毕！");
+            logger.info("识别完毕！\n");
 
             return true;
         } catch (Exception e) {

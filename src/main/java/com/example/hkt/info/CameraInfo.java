@@ -6,24 +6,22 @@ import java.io.Serializable;
 
 
 @Data
-
-
 public class CameraInfo implements Serializable {
 
     private static final long serialVersionUID = -5044197375358881001L;
 
 
-    private Integer id;
+    private int id;
 
 
     private String ip;
 
 
-    private Integer orgId;
+    private int orgId;
 
-    private Integer lUserID;
+    private int lUserID=1210;
 
 
-    private Integer lAlarmHandle;
+    private int lAlarmHandle;
 
 }
