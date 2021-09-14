@@ -349,8 +349,6 @@ public class ClientDemo {
                 String imgName = sf.format(new Date()) + ".jpg";
                 System.out.println("大小"+lpOuter.dwSize);
                 HCNetSDK.NET_DVR_PLATE_INFO info = lpOuter.struPlateInfo;
-
-
                 File file = new File(filename + imgName);
                 if (!file.getParentFile().exists()) {
                     file.getParentFile().mkdirs();
