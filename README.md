@@ -11,4 +11,6 @@
 修改WebSocketController以及CameraController。
 设备对准摄像头。请求相关接口即可。
 #### 预期效果，前端会反馈识别车牌的json数据以及图片数据。
-
+-  **Contact-Email me :** [xgc（xgc@tom.com）](mailto:xgc@tom.com)
+![Image text](https://i.loli.net/2021/11/29/pyIHGcArQ6DVid3.png)
+或者加入我们QQ群：57376015<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=MmRCU6Iv3Le004sO9jkiFv3eTtVJbU2t&jump_from=webapi"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="CODE||程序交流群" title="CODE||程序交流群"></a>
